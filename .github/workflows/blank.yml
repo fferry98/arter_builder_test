@@ -17,12 +17,12 @@ jobs:
     - name: Install Dependencies
       run: |
         sudo apt update
-        sudo apt install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git git-lfs gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev libelf-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev adb fastboot pigz python3-dev swig
+        sudo apt install -y bc bison build-essential curl flex g++-multilib gcc-multilib git git-lfs gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev libelf-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev adb fastboot pigz python3-dev swig
 
     - name: Download Tools and Fix Permissions
       run: |
-        mkdir kernel_build
-        cd kernel_build
+        mkdir /home/runner/work/arter_builder_test/arter_builder_test/kernel_build
+        cd /home/runner/work/arter_builder_test/arter_builder_test/kernel_build
         git clone https://github.com/ASUS-SM8475/platform_external_dtc.git
         cd platform_external_dtc/
         make
@@ -38,35 +38,31 @@ jobs:
         git clone https://github.com/Shubhamvis98/AIK.git
         git clone https://github.com/affggh/mkdtimg.git
         cd mkdtimg
-        echo "KERNEL_BUILD_DIR=/home/runner/work/arter_builder_test/arter_builder_test/kernel_build" >> $GITHUB_ENV
-        echo "PATH=$PATH:$KERNEL_BUILD_DIR/llvm-19.1.6-x86_64/bin" >> $GITHUB_ENV
         make
         cd ..
 
     - name: Set Environment Variables
       run: |
-        echo "PATH=$PATH:$KERNEL_BUILD_DIR/platform_external_dtc" >> $GITHUB_ENV
-        echo "PATH=$PATH:$KERNEL_BUILD_DIR/mkbootimg" >> $GITHUB_ENV
+        ENV PATH="/home/runner/work/arter_builder_test/arter_builder_test/kernel_build/llvm-19.1.6-x86_64/bin:/home/runner/work/arter_builder_test/arter_builder_test/kernel_build/platform_external_dtc:/home/runner/work/arter_builder_test/arter_builder_test/kernel_build/mkbootimg:/home/runner/work/arter_builder_test/arter_builder_test/kernel_build/mkdtimg:${PATH}"
         echo "CC=clang" >> $GITHUB_ENV
         echo "CLANG_TRIPLE=aarch64-linux-gnu-" >> $GITHUB_ENV
         echo "CROSS_COMPILE=aarch64-linux-gnu-" >> $GITHUB_ENV
         echo "CROSS_COMPILE_ARM32=arm-linux-gnueabi-" >> $GITHUB_ENV
         echo "ARCH=arm64" >> $GITHUB_ENV
-        echo "PATH=$PATH:$KERNEL_BUILD_DIR/mkdtimg" >> $GITHUB_ENV
 
     - name: Clone Kernel Repository
       run: |
-        cd $KERNEL_BUILD_DIR
+        cd /home/runner/work/arter_builder_test/arter_builder_test/kernel_build
         git clone --single-branch --branch master https://github.com/arter97/android_kernel_asus_zenfone9.git
 
     - name: Add KernelSU
       run: |
-        cd $KERNEL_BUILD_DIR/android_kernel_asus_zenfone9/
+        cd /home/runner/work/arter_builder_test/arter_builder_test/kernel_build/android_kernel_asus_zenfone9/
         curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next-susfs/kernel/setup.sh" | bash -s next-susfs-dev
 
     - name: Copy and Edit Additional KernelSU Files
       run: |
-        cd $KERNEL_BUILD_DIR/android_kernel_asus_zenfone9/
+        cd /home/runner/work/arter_builder_test/arter_builder_test/kernel_build/android_kernel_asus_zenfone9/
         rm defconfig
         wget https://raw.githubusercontent.com/fferry98/android_kernel_asus_zenfone9/refs/heads/test/defconfig
         cd drivers/input/
@@ -84,19 +80,19 @@ jobs:
 
     - name: Add SUSFS
       run: |
-        cd $KERNEL_BUILD_DIR/
+        cd /home/runner/work/arter_builder_test/arter_builder_test/kernel_build/
         git clone --single-branch --branch gki-android12-5.10 https://gitlab.com/simonpunk/susfs4ksu.git
-        cd $KERNEL_BUILD_DIR/susfs4ksu/
-        cp ./kernel_patches/50_add_susfs_in_gki-android12-5.10.patch $KERNEL_BUILD_DIR/android_kernel_asus_zenfone9/
-        cp ./kernel_patches/fs/* $KERNEL_BUILD_DIR/android_kernel_asus_zenfone9/fs/
-        cp ./kernel_patches/include/linux/* $KERNEL_BUILD_DIR/android_kernel_asus_zenfone9/include/linux/
-        cd $KERNEL_BUILD_DIR/android_kernel_asus_zenfone9/
+        cd /home/runner/work/arter_builder_test/arter_builder_test/kernel_build/susfs4ksu/
+        cp ./kernel_patches/50_add_susfs_in_gki-android12-5.10.patch /home/runner/work/arter_builder_test/arter_builder_test/kernel_build/android_kernel_asus_zenfone9/
+        cp ./kernel_patches/fs/* /home/runner/work/arter_builder_test/arter_builder_test/kernel_build/android_kernel_asus_zenfone9/fs/
+        cp ./kernel_patches/include/linux/* /home/runner/work/arter_builder_test/arter_builder_test/kernel_build/android_kernel_asus_zenfone9/include/linux/
+        cd /home/runner/work/arter_builder_test/arter_builder_test/kernel_build/android_kernel_asus_zenfone9/
         patch -p1 < 50_add_susfs_in_gki-android12-5.10.patch
 
     - name: Modify rules.c
       run: |
-        sed -i 's/#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 4, 0))/#if 1/' $KERNEL_BUILD_DIR/android_kernel_asus_zenfone9/drivers/kernelsu/selinux/rules.c
-        sed -i 's/#if ((!defined(KSU_COMPAT_USE_SELINUX_STATE)) || \\\n\t\t\t\t\tLINUX_VERSION_CODE >= KERNEL_VERSION(6, 4, 0))/#if 1/' $KERNEL_BUILD_DIR/android_kernel_asus_zenfone9/drivers/kernelsu/selinux/rules.c
+        sed -i 's/#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 4, 0))/#if 1/' /home/runner/work/arter_builder_test/arter_builder_test/kernel_build/android_kernel_asus_zenfone9/drivers/kernelsu/selinux/rules.c
+        sed -i 's/#if ((!defined(KSU_COMPAT_USE_SELINUX_STATE)) || \\\n\t\t\t\t\tLINUX_VERSION_CODE >= KERNEL_VERSION(6, 4, 0))/#if 1/' /home/runner/work/arter_builder_test/arter_builder_test/kernel_build/android_kernel_asus_zenfone9/drivers/kernelsu/selinux/rules.c
 
     - name: Modify Makefile
       run: |
