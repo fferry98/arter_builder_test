@@ -38,12 +38,12 @@ jobs:
         git clone https://github.com/Shubhamvis98/AIK.git
         git clone https://github.com/affggh/mkdtimg.git
         cd mkdtimg
+        echo "PATH=/home/runner/work/arter_builder_test/arter_builder_test/kernel_build/llvm-19.1.6-x86_64/bin:/home/runner/work/arter_builder_test/arter_builder_test/kernel_build/platform_external_dtc:/home/runner/work/arter_builder_test/arter_builder_test/kernel_build/mkbootimg:/home/runner/work/arter_builder_test/arter_builder_test/kernel_build/mkdtimg:${PATH}" >> $GITHUB_ENV
         make
         cd ..
 
     - name: Set Environment Variables
       run: |
-        echo "PATH=/home/runner/work/arter_builder_test/arter_builder_test/kernel_build/llvm-19.1.6-x86_64/bin:/home/runner/work/arter_builder_test/arter_builder_test/kernel_build/platform_external_dtc:/home/runner/work/arter_builder_test/arter_builder_test/kernel_build/mkbootimg:/home/runner/work/arter_builder_test/arter_builder_test/kernel_build/mkdtimg:${PATH}" >> $GITHUB_ENV
         echo "CC=clang" >> $GITHUB_ENV
         echo "CLANG_TRIPLE=aarch64-linux-gnu-" >> $GITHUB_ENV
         echo "CROSS_COMPILE=aarch64-linux-gnu-" >> $GITHUB_ENV
