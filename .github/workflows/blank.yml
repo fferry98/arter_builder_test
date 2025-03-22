@@ -48,11 +48,11 @@ jobs:
         git clone https://github.com/Shubhamvis98/AIK.git
 
         #env
-        echo "CC=clang" >> $GITHUB_ENV
-        echo "CLANG_TRIPLE=aarch64-linux-gnu-" >> $GITHUB_ENV
-        echo "CROSS_COMPILE=aarch64-linux-gnu-" >> $GITHUB_ENV
-        echo "CROSS_COMPILE_ARM32=arm-linux-gnueabi-" >> $GITHUB_ENV
-        echo "ARCH=arm64" >> $GITHUB_ENV
+        export CC="clang"
+        export CLANG_TRIPLE="aarch64-linux-gnu-"
+        export CROSS_COMPILE="aarch64-linux-gnu-"
+        export CROSS_COMPILE_ARM32="arm-linux-gnueabi-"
+        export ARCH="arm64"
 
         # mkdtimg
         git clone https://github.com/affggh/mkdtimg.git
