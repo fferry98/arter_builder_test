@@ -38,12 +38,12 @@ jobs:
         git clone https://github.com/Shubhamvis98/AIK.git
         git clone https://github.com/affggh/mkdtimg.git
         cd mkdtimg
-        ENV PATH="/home/runner/work/arter_builder_test/arter_builder_test/kernel_build/llvm-19.1.6-x86_64/bin:/home/runner/work/arter_builder_test/arter_builder_test/kernel_build/platform_external_dtc:/home/runner/work/arter_builder_test/arter_builder_test/kernel_build/mkbootimg:/home/runner/work/arter_builder_test/arter_builder_test/kernel_build/mkdtimg:${PATH}"
         make
         cd ..
 
     - name: Set Environment Variables
       run: |
+        echo "PATH=/home/runner/work/arter_builder_test/arter_builder_test/kernel_build/llvm-19.1.6-x86_64/bin:/home/runner/work/arter_builder_test/arter_builder_test/kernel_build/platform_external_dtc:/home/runner/work/arter_builder_test/arter_builder_test/kernel_build/mkbootimg:/home/runner/work/arter_builder_test/arter_builder_test/kernel_build/mkdtimg:${PATH}" >> $GITHUB_ENV
         echo "CC=clang" >> $GITHUB_ENV
         echo "CLANG_TRIPLE=aarch64-linux-gnu-" >> $GITHUB_ENV
         echo "CROSS_COMPILE=aarch64-linux-gnu-" >> $GITHUB_ENV
@@ -96,7 +96,7 @@ jobs:
 
     - name: Modify Makefile
       run: |
-        sed -i 's|override LLVM_PATH := /home/arter97/android/nathan/llvm-19.1.6-x86_64/bin/|override LLVM_PATH := $KERNEL_BUILD_DIR/llvm-19.1.6-x86_64/bin/|' $KERNEL_BUILD_DIR/android_kernel_asus_zenfone9/Makefile
+        sed -i 's|override LLVM_PATH := /home/arter97/android/nathan/llvm-19.1.6-x86_64/bin/|override LLVM_PATH := /home/runner/work/arter_builder_test/arter_builder_test/kernel_build/llvm-19.1.6-x86_64/
 
     - name: Build Kernel
       run: |
