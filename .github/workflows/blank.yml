@@ -57,6 +57,8 @@ jobs:
         # mkdtimg
         git clone https://github.com/affggh/mkdtimg.git
         cd mkdtimg
+        # Ensure LLVM bin is in PATH *before* running make
+        export PATH="$GITHUB_WORKSPACE/kernel_build/llvm-19.1.6-x86_64/bin:$PATH"
         make
         echo "$GITHUB_WORKSPACE/kernel_build/mkdtimg" >> $GITHUB_PATH
         cd ..
@@ -115,4 +117,4 @@ jobs:
     - name: Upload kernel files as pages artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        path: $GITHUB_WORKSPACE/kernel_build/android_kernel_asus_zenfone9/arter97-kernel-$(cat $GITHUB_WORKSPACE/kernel_build/android_kernel_asus_zenfone9/version)-boot.img
+        path: <span class="math-inline">GITHUB\_WORKSPACE/kernel\_build/android\_kernel\_asus\_zenfone9/arter97\-kernel\-</span>(cat $GITHUB_WORKSPACE
