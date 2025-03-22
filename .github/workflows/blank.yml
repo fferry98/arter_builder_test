@@ -38,15 +38,15 @@ jobs:
         git clone https://github.com/Shubhamvis98/AIK.git
         git clone https://github.com/affggh/mkdtimg.git
         cd mkdtimg
+        echo "KERNEL_BUILD_DIR=/home/runner/work/arter_builder_test/arter_builder_test/kernel_build" >> $GITHUB_ENV
+        echo "PATH=$PATH:$KERNEL_BUILD_DIR/llvm-19.1.6-x86_64/bin" >> $GITHUB_ENV
         make
         cd ..
 
     - name: Set Environment Variables
       run: |
-        echo "KERNEL_BUILD_DIR=/home/runner/work/arter_builder_test/arter_builder_test/kernel_build" >> $GITHUB_ENV
         echo "PATH=$PATH:$KERNEL_BUILD_DIR/platform_external_dtc" >> $GITHUB_ENV
         echo "PATH=$PATH:$KERNEL_BUILD_DIR/mkbootimg" >> $GITHUB_ENV
-        echo "PATH=$PATH:$KERNEL_BUILD_DIR/llvm-19.1.6-x86_64/bin" >> $GITHUB_ENV
         echo "CC=clang" >> $GITHUB_ENV
         echo "CLANG_TRIPLE=aarch64-linux-gnu-" >> $GITHUB_ENV
         echo "CROSS_COMPILE=aarch64-linux-gnu-" >> $GITHUB_ENV
