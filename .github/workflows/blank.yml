@@ -12,7 +12,7 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout
+      uses: actions/checkout@v3
 
     - name: Install Dependencies
       run: |
@@ -107,7 +107,7 @@ jobs:
         ./build_kernel.sh
 
     - name: Upload Artifacts
-      uses: actions/upload-artifact
+      uses: actions/upload-artifact@v3
       with:
         name: kernel-build-artifacts
         path: kernel_build/android_kernel_asus_zenfone9/arter97-kernel-$(cat kernel_build/android_kernel_asus_zenfone9/version)-boot.img
