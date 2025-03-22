@@ -1,7 +1,6 @@
 name: Build Kernel
 
 on:
-  workflow_dispatch: # Allows manual triggering of the workflow
   push:
     branches:
       - master # Or your main branch
@@ -57,8 +56,6 @@ jobs:
         # mkdtimg
         git clone https://github.com/affggh/mkdtimg.git
         cd mkdtimg
-        # Ensure LLVM bin is in PATH *before* running make
-        export PATH="$GITHUB_WORKSPACE/kernel_build/llvm-19.1.6-x86_64/bin:$PATH"
         make
         echo "$GITHUB_WORKSPACE/kernel_build/mkdtimg" >> $GITHUB_PATH
         cd ..
