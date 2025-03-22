@@ -38,6 +38,7 @@ jobs:
         git clone https://github.com/affggh/mkdtimg.git
         cd mkdtimg
         echo "PATH=$PATH:/root/kernel_build/llvm-19.1.6-x86_64/bin" >> $GITHUB_ENV
+        ls -l /root/kernel_build/llvm-19.1.6-x86_64/bin/llvm-strip
         make
         cd ..
 
