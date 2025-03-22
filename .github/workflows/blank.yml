@@ -58,7 +58,6 @@ jobs:
         git clone https://github.com/affggh/mkdtimg.git
         cd mkdtimg
         make
-        export PATH="$GITHUB_WORKSPACE/kernel_build/mkdtimg:$PATH"
         cd ..
 
     - name: Clone kernel repo and add KSU
