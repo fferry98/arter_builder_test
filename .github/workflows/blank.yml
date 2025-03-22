@@ -17,7 +17,6 @@ jobs:
     - name: Install Dependencies
       run: |
         sudo apt update
-        sudo apt upgrade -y
         sudo apt install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git git-lfs gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev libelf-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev adb fastboot pigz python3-dev swig
 
     - name: Download Tools
@@ -38,13 +37,13 @@ jobs:
         git clone https://github.com/Shubhamvis98/AIK.git
         git clone https://github.com/affggh/mkdtimg.git
         cd mkdtimg
+        echo "PATH=$PATH:/root/kernel_build/llvm-19.1.6-x86_64/bin" >> $GITHUB_ENV
         make
         cd ..
 
     - name: Set Environment Variables
       run: |
         echo "PATH=$PATH:/root/kernel_build/platform_external_dtc" >> $GITHUB_ENV
-        echo "PATH=$PATH:/root/kernel_build/llvm-19.1.6-x86_64/bin" >> $GITHUB_ENV
         echo "PATH=$PATH:/root/kernel_build/mkbootimg" >> $GITHUB_ENV
         echo "CC=clang" >> $GITHUB_ENV
         echo "CLANG_TRIPLE=aarch64-linux-gnu-" >> $GITHUB_ENV
