@@ -23,7 +23,6 @@ jobs:
       run: |
         mkdir kernel_build
         cd kernel_build
-        echo "KERNEL_BUILD_DIR=/home/runner/work/arter_builder_test/arter_builder_test/kernel_build" >> $GITHUB_ENV
         git clone https://github.com/ASUS-SM8475/platform_external_dtc.git
         cd platform_external_dtc/
         make
@@ -36,24 +35,24 @@ jobs:
         wget https://mirrors.edge.kernel.org/pub/tools/llvm/files/llvm-19.1.6-x86_64.tar.gz
         tar -xvzf llvm-19.1.6-x86_64.tar.gz
         chmod -R +x llvm-19.1.6-x86_64/bin/
-        echo "PATH=$PATH:$KERNEL_BUILD_DIR/llvm-19.1.6-x86_64/bin" >> $GITHUB_ENV
         git clone https://github.com/Shubhamvis98/AIK.git
         git clone https://github.com/affggh/mkdtimg.git
         cd mkdtimg
         make
         cd ..
-        
+
     - name: Set Environment Variables
       run: |
+        echo "KERNEL_BUILD_DIR=/home/runner/work/arter_builder_test/arter_builder_test/kernel_build" >> $GITHUB_ENV
         echo "PATH=$PATH:$KERNEL_BUILD_DIR/platform_external_dtc" >> $GITHUB_ENV
         echo "PATH=$PATH:$KERNEL_BUILD_DIR/mkbootimg" >> $GITHUB_ENV
+        echo "PATH=$PATH:$KERNEL_BUILD_DIR/llvm-19.1.6-x86_64/bin" >> $GITHUB_ENV
         echo "CC=clang" >> $GITHUB_ENV
         echo "CLANG_TRIPLE=aarch64-linux-gnu-" >> $GITHUB_ENV
         echo "CROSS_COMPILE=aarch64-linux-gnu-" >> $GITHUB_ENV
         echo "CROSS_COMPILE_ARM32=arm-linux-gnueabi-" >> $GITHUB_ENV
         echo "ARCH=arm64" >> $GITHUB_ENV
         echo "PATH=$PATH:$KERNEL_BUILD_DIR/mkdtimg" >> $GITHUB_ENV
-        echo "PATH=$PATH:$KERNEL_BUILD_DIR/llvm-19.1.6-x86_64/bin" >> $GITHUB_ENV
 
     - name: Clone Kernel Repository
       run: |
